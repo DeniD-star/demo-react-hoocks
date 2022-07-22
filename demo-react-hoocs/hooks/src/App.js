@@ -19,13 +19,17 @@ function App() {
       }
     ]);
   }
+
+  const taskDeleteHandler = (taskId)=>{
+      setTasks(state=> state.filter(x=> x._id != taskId))
+  }
   return (
     <div className="App">
       <header>
         <h1>TO DO App</h1>
       </header>
       <main>
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} taskDeleteHandler={taskDeleteHandler}/>
         <CreateTask createTaskHandler={createTaskHandler} />
       </main>
     </div>
