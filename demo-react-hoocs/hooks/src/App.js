@@ -2,6 +2,7 @@ import TaskList from './components/TaskList';
 import './App.css';
 import CreateTask from './components/CreateTask';
 import useFetch from './hooks/useFetch';
+import useTodoFetch from './hooks/useTodoFetch';
 
 function App() {
   // const [tasks, setTasks] = useState([ //imame initial stoinost masiv
@@ -19,7 +20,7 @@ function App() {
   // }, [])
 
   const [tasks, setTasks, isLoading] = useFetch('http://localhost:3030/jsonstore/todo', []);
-
+  const{removeTodo} = useTodoFetch()
   const createTaskHandler = (newTask) => {
     setTasks(state => [ //trqbva da napravim nova referenzia na masiva, i trugvame ot poslednata stoinost na masiva, pribavqiki mu noviq task
       ...state,
@@ -30,8 +31,13 @@ function App() {
     ]);
   }
 
+  
   const taskDeleteHandler = (taskId)=>{
-      setTasks(state=> state.filter(x=> x._id != taskId));//tova e iztrivane samo ot state,
+    removeTodo(taskId)//purvo go iztrivame ot servura
+    .then(result=>{  //i samo togava go iztrivame i ot state
+      setTasks(state=> state.filter(x=> x._id != taskId));
+    })
+      //setTasks(state=> state.filter(x=> x._id != taskId));//tova e iztrivane samo ot state,
       // trqbva da se napravi i iztrivane ot servera i tui kato imame povtarqemost na funkzionalnost ili logika,
       //6te si napravq CUSTOM HOOC
   }
